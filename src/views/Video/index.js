@@ -207,7 +207,7 @@ const Index = () => {
   });
 
   const handleRemoveOpen = (row) => {
-    console.log(row);
+    //console.log(row);
 
     setVideo(row);
     setRemoveOpen(true);
@@ -233,28 +233,6 @@ const Index = () => {
     deleteImage({ variables: { image_name: image_name } });
   };
 
-  // const [ selectHomeCat ] = useMutation(HOME_CATEGORY, {
-  //     onError: (error) => {
-  //         console.log(error);
-  //     },
-  //     onCompleted: (data) => {
-  //         console.log(data);
-  //     }
-  // })
-
-  //---------------------- End Delete Video -----------------
-
-  //----------------- Start Add Video -------------------
-  // const videoAlert = (message, isError = false) => {
-  //   setShowAlert({ message: message, isError: isError });
-  //   setTimeout(() => {
-  //     setShowAlert({ message: "", isError: false });
-  //   }, 3000);
-  // };
-  // const addVideo = () => {
-  //   navigate("/video/create");
-  // };
-
   //----------------- Start Add Video -------------------
   const videoAlert = (message, isError = false) => {
     setShowAlert({ message: message, isError: isError });
@@ -272,8 +250,8 @@ const Index = () => {
 
   //------------------Start Update Video -------------------
   const handleUpdateOpen = (row) => {
-    setUpdateOpen(row);
-    //setUpdateOpen(true);
+    setVideo(row);
+    setUpdateOpen(true);
   };
 
   const handleUpdateClose = () => {
