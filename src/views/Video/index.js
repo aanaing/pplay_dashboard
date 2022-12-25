@@ -1,0 +1,671 @@
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import DirectionsIcon from "@mui/icons-material/Directions";
+import "../../style/App.css";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+
+import {
+  Box,
+  Breadcrumbs,
+  ListItemButton,
+  ListItemText,
+  Button,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  CardActions,
+  Modal,
+  styled,
+  TableCell,
+  TableRow,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TablePagination,
+  tableCellClasses,
+  Avatar,
+} from "@mui/material";
+
+import { useLazyQuery } from "@apollo/client";
+import {
+  ALL_VIDEO_CATEGORY,
+  ALL_VIDEOS,
+  DELETE_VIDEOS,
+  VIDEO_CATEGORY,
+} from "../../gql/video";
+import { DELETE_IMAGE } from "../../gql/misc";
+import { useQuery, useMutation } from "@apollo/client";
+import CreateVideo from "../../components/video/CreateVideo";
+import UpdateVideo from "../../components/video/UpdateVideo";
+import RemoveVideo from "../../components/video/RemoveVideo";
+import { green } from "@mui/material/colors";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "100vw",
+  //bgcolor: "white",
+  // border: "2px solid #000",
+  // boxShadow: 24,
+  p: 8,
+};
+
+const styleR = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%,-50%)",
+  width: 300,
+  backgroundColor: "#cecece",
+};
+
+const Index = () => {
+  // Search button
+  const [search, setSearch] = useState("");
+
+  // filter
+  const [homeOpen, setHomeOpen] = useState(false);
+  const [gymOpen, setGymOpen] = useState(false);
+
+  //video crud
+  const [video, setVideo] = useState("");
+  const [removeOpen, setRemoveOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
+
+  // alert message
+  const [showAlert, setShowAlert] = useState({ message: "", isError: false });
+  const navigate = useNavigate();
+
+  // get data from db
+  const [loadVideo, result] = useLazyQuery(ALL_VIDEOS);
+  const [loadCategory, resultCategory] = useLazyQuery(VIDEO_CATEGORY);
+  const [loadHome, resutlHome] = useLazyQuery(ALL_VIDEO_CATEGORY);
+
+  //for pagination
+  const [count, setCount] = useState(0);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [offset, setOffset] = useState(0);
+
+  //console.log(result);
+  const data = [
+    { label: "ALL" },
+    { label: "CHEST" },
+    { label: "BACK" },
+    { label: "LEG" },
+    { label: "TRICEPS" },
+  ];
+  const gym = [
+    { label: "ALL" },
+    { label: "CHEST" },
+    { label: "BACK" },
+    { label: "LEG" },
+    { label: "TRICEPS" },
+  ];
+
+  //for pagination
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    setOffset(rowsPerPage * newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  // ----------- Start search and get all video ------------------
+  const handleSearch = (e) => {
+    setSearch(document.getElementById("search-by-title").value);
+    // setSearch(" ");
+    //setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    loadVideo({ variables: { search: `%${search}%` } });
+  }, [loadVideo, search]);
+
+  useEffect(() => {
+    if (result.data) {
+      setVideo(result.data.video_package);
+    }
+  }, [result]);
+  //console.log(result);
+
+  useEffect(() => {
+    if (resultCategory.data) {
+      setVideo(resultCategory.data.video_package);
+    }
+  }, [resultCategory]);
+
+  useEffect(() => {
+    if (resutlHome.data) {
+      setVideo(resutlHome.data.video_package);
+    }
+  }, [resutlHome]);
+
+  const homeCategory = (e) => {
+    if (e.target.textContent === "ALL") {
+      loadHome({ variables: { main: "HOME" } });
+    } else {
+      loadCategory({ variables: { main: "HOME", sub: e.target.textContent } });
+    }
+  };
+
+  const gymCategory = (e) => {
+    console.log(e.target);
+    if (e.target.textContent === "ALL") {
+      loadHome({ variables: { main: "GYM" } });
+    } else {
+      loadCategory({ variables: { main: "GYM", sub: e.target.textContent } });
+    }
+  };
+
+  const zumbaCategory = () => {
+    setHomeOpen(false);
+    setGymOpen(false);
+    loadHome({ variables: { main: "ZUMBA" } });
+  };
+
+  const homeType = (e) => {
+    //loadHome({ variables: { main: "HOME" } });
+    setHomeOpen(!homeOpen);
+    setGymOpen(false);
+  };
+
+  // ----------- End search and get all video ------------------
+
+  // ----------Start Delete video ------------------
+  const [deleteVideo] = useMutation(DELETE_VIDEOS, {
+    onError: (error) => {
+      console.log("error : ", error);
+    },
+    onCompleted: () => {
+      setShowAlert({ message: `Videos have been removed.`, isError: false });
+      setTimeout(() => {
+        setShowAlert({ message: "", isError: false });
+      }, 3000);
+    },
+  });
+
+  const [deleteImage] = useMutation(DELETE_IMAGE, {
+    onError: (error) => {
+      console.log("error : ", error);
+    },
+  });
+
+  const handleRemoveOpen = (row) => {
+    console.log(row);
+
+    setVideo(row);
+    setRemoveOpen(true);
+  };
+  const handleRemoveClose = () => {
+    result.refetch();
+    setRemoveOpen(false);
+  };
+
+  const handleRemove = () => {
+    if (!video) {
+      return;
+    }
+
+    let image_url = video.thumbnail_image_url;
+
+    let image_name = image_url.substring(
+      image_url.lastIndexOf("/") + 1,
+      image_url.length
+    );
+
+    deleteVideo({ variables: { id: video.id } });
+    deleteImage({ variables: { image_name: image_name } });
+  };
+
+  // const [ selectHomeCat ] = useMutation(HOME_CATEGORY, {
+  //     onError: (error) => {
+  //         console.log(error);
+  //     },
+  //     onCompleted: (data) => {
+  //         console.log(data);
+  //     }
+  // })
+
+  //---------------------- End Delete Video -----------------
+
+  //----------------- Start Add Video -------------------
+  // const videoAlert = (message, isError = false) => {
+  //   setShowAlert({ message: message, isError: isError });
+  //   setTimeout(() => {
+  //     setShowAlert({ message: "", isError: false });
+  //   }, 3000);
+  // };
+  // const addVideo = () => {
+  //   navigate("/video/create");
+  // };
+
+  //----------------- Start Add Video -------------------
+  const videoAlert = (message, isError = false) => {
+    setShowAlert({ message: message, isError: isError });
+    setTimeout(() => {
+      setShowAlert({ message: "", isError: false });
+    }, 3000);
+  };
+
+  const handleCreateOpen = () => setCreateOpen(true);
+  const handleCreateClose = () => {
+    result.refetch();
+    setCreateOpen(false);
+  };
+  //------------------ End Add Video --------------------
+
+  //------------------Start Update Video -------------------
+  const handleUpdateOpen = (row) => {
+    setUpdateOpen(row);
+    //setUpdateOpen(true);
+  };
+
+  const handleUpdateClose = () => {
+    result.refetch();
+    setUpdateOpen(false);
+  };
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      //      backgroundColor: theme.palette.grey[700],
+      backgroundColor: theme.palette.primary.light,
+      color: theme.palette.common.black,
+      fontSize: 18,
+      //fontWeight: "bold",
+      minWidth: 70,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 15,
+      //backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
+  if (!video) {
+    return (
+      <div>
+        <em>Loading....</em>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <div className="align">
+        {/* dashboard */}
+        <div>
+          <Breadcrumbs
+            aria-label="breadcrumb"
+            fontWeight="bold"
+            fontSize="1.2rem"
+          >
+            <Link to="/" className="dashboard">
+              Dashboard
+            </Link>
+            <span>Video Package</span>
+          </Breadcrumbs>
+        </div>
+        {/* search */}
+        <div>
+          <Paper
+            component="form"
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              width: 350,
+            }}
+          >
+            {/* Search Box */}
+
+            <InputBase
+              id="search-by-title"
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Search By Video Title"
+              type="search"
+              // value={search}
+              //onChange={handleSearch}
+            />
+            {/* <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton> */}
+            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <IconButton
+              color="warning"
+              id="search-by-title"
+              sx={{ p: "10px" }}
+              aria-label="directions"
+              value={search}
+              onClick={handleSearch}
+            >
+              <DirectionsIcon />
+            </IconButton>
+          </Paper>
+        </div>
+      </div>
+      <div className="exercise">
+        <Box>
+          <ListItemButton
+            alignItems="flex-start"
+            // onClick={() => {
+            //   setHomeOpen(!homeOpen);
+            //   setGymOpen(false);
+            // }}
+            onClick={homeType}
+            sx={{
+              alignItems: "center",
+              textAlign: "center",
+              bgcolor: "#4d4d4d",
+              borderRadius: 2,
+              height: 50,
+              fontWeight: "bold",
+              px: 3,
+              pt: 2,
+              pb: homeOpen ? 0 : 2.5,
+              //"& svg": { opacity: 1 },
+            }}
+          >
+            <ListItemText sx={{ color: "white" }} primary="HOME EXERCISE" />
+            <KeyboardArrowDown
+              sx={{
+                mr: -1,
+                opacity: 0,
+                transform: homeOpen ? "rotate(-180deg)" : "rotate(0)",
+                transition: "0.2s",
+                color: "white",
+              }}
+            />
+          </ListItemButton>
+          {homeOpen &&
+            data.map((item) => (
+              <ListItemButton
+                key={item.label}
+                sx={{
+                  color: "black",
+                }}
+                onClick={homeCategory}
+              >
+                <ListItemText
+                  sx={{
+                    color: "black",
+                  }}
+                  primary={item.label}
+                  primaryTypographyProps={{
+                    fontSize: 15,
+                    fontWeight: "medium",
+                    lineHeight: 1,
+                  }}
+                />
+              </ListItemButton>
+            ))}
+        </Box>
+        <Box>
+          <ListItemButton
+            onClick={() => {
+              setGymOpen(!gymOpen);
+              setHomeOpen(false);
+            }}
+            sx={{
+              alignItems: "center",
+              textAlign: "center",
+              px: 3,
+              height: 50,
+              pt: 2,
+              fontWeight: "bold",
+              bgcolor: "#4d4d4d",
+              borderRadius: 2,
+              pb: gymOpen ? 0 : 2.5,
+              "& svg": { opacity: 1 },
+              // "&:hover, &:focus": { color: open ? "red" : "blue" },
+            }}
+          >
+            <ListItemText sx={{ color: "white" }} primary="GYM EXERCISE" />
+            <KeyboardArrowDown
+              sx={{
+                mr: -1,
+                opacity: 0,
+                transform: gymOpen ? "rotate(-180deg)" : "rotate(0)",
+                transition: "0.2s",
+                color: "white",
+              }}
+            />
+          </ListItemButton>
+          {gymOpen &&
+            gym.map((item) => (
+              <ListItemButton
+                key={item.label}
+                sx={{
+                  color: "black",
+                }}
+                onClick={gymCategory}
+              >
+                <ListItemText
+                  sx={{ color: "black" }}
+                  primary={item.label}
+                  primaryTypographyProps={{
+                    fontSize: 15,
+                    fontWeight: "medium",
+                    lineHeight: 1,
+                  }}
+                />
+              </ListItemButton>
+            ))}
+        </Box>
+        <Box>
+          <ListItemButton
+            alignItems="flex-start"
+            sx={{
+              bgcolor: "#4d4d4d",
+              width: 180,
+              color: "white",
+              fontWeight: "bold",
+              borderRadius: 2,
+              borderRadius: 3,
+              alignItems: "center",
+              textAlign: "center",
+            }}
+            onClick={zumbaCategory}
+          >
+            <ListItemText sx={{ color: "white" }} primary="ZUMBA" />
+          </ListItemButton>
+        </Box>
+
+        <Box>
+          <Button
+            sx={{
+              height: 75,
+              borderRadius: 20,
+              p: 3,
+
+              fontWeight: "bold",
+            }}
+            variant="contained"
+            //color="secondary"
+            onClick={handleCreateOpen}
+          >
+            Add
+          </Button>
+        </Box>
+      </div>
+      <Box
+        sx={{
+          display: "flex",
+          flexFlow: "wrap row",
+          "& > :not(style)": {
+            m: 1,
+            width: "100%",
+            minHeight: "25vh",
+          },
+          mt: "1rem",
+        }}
+      >
+        <TableContainer sx={{ maxHeight: "60vh", Width: "10px" }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell>image</StyledTableCell>
+                <StyledTableCell>Video Title</StyledTableCell>
+                <StyledTableCell>Main Type</StyledTableCell>
+                <StyledTableCell>Sub Type</StyledTableCell>
+                <StyledTableCell>Package Type</StyledTableCell>
+
+                <StyledTableCell>Actions</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {video.length > 0 ? (
+                video.map((row, index) => (
+                  <StyledTableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={index}
+                  >
+                    <StyledTableCell>{row.id.substring(0, 8)}</StyledTableCell>
+                    <StyledTableCell>
+                      <Avatar
+                        alt="video"
+                        src={row.thumbnail_image_url}
+                        sx={{ width: 56, height: 56 }}
+                      ></Avatar>
+                    </StyledTableCell>
+                    <StyledTableCell>{row.video_title}</StyledTableCell>
+                    <StyledTableCell>{row.main_type}</StyledTableCell>
+                    <StyledTableCell>{row.sub_type}</StyledTableCell>
+                    <StyledTableCell>{row.package_type}</StyledTableCell>
+
+                    <StyledTableCell>
+                      <Button
+                        onClick={() => handleRemoveOpen(row)}
+                        size="small"
+                        color="error"
+                      >
+                        Remove
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdateOpen(row)}
+                        size="small"
+                        color="primary"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="inherit"
+                        onClick={() => navigate(`/video/${row.id}`)}
+                      >
+                        Video Details
+                      </Button>
+                      {/* <Button
+                      onClick={handleCreateOpen}
+                      size="small"
+                      color="secondary"
+                    >
+                      Add
+                    </Button> */}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))
+              ) : (
+                <h3>No data</h3>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          sx={{ color: "black" }}
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Box>
+      {/* Remove Video */}
+      <Modal
+        keepMounted
+        open={removeOpen}
+        onClose={handleRemoveClose}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box style={styleR} sx={{ px: 4, py: 4, borderColor: "black" }}>
+          <RemoveVideo />
+          <Box sx={{ textAlign: "right", mt: 2 }}>
+            <Button color="primary" onClick={handleRemoveClose}>
+              Cancel
+            </Button>
+            <Button color="error" onClick={handleRemove}>
+              Confirm
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+      {/* Add Video */}
+      <div>
+        <Modal
+          keepMounted
+          open={createOpen}
+          onClose={handleCreateClose}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-descripedby="keep-mounted-modal-description"
+        >
+          <Box style={style}>
+            <CreateVideo
+              videoAlert={videoAlert}
+              handleClose={handleCreateClose}
+            />
+          </Box>
+        </Modal>
+      </div>
+      {/* Update Video */}
+      <div>
+        <Modal
+          keepMounted
+          open={updateOpen}
+          onClose={handleUpdateClose}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-descripedby="keep-mounted-modal-description"
+        >
+          <Box sx={style}>
+            <UpdateVideo
+              videoAlert={videoAlert}
+              handleClose={handleUpdateClose}
+              video={video}
+            />
+          </Box>
+        </Modal>
+      </div>
+    </div>
+  );
+};
+export default Index;
