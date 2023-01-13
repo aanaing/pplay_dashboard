@@ -134,7 +134,7 @@ const CreateRoutine = ({ handleClose, routineAlert }) => {
       console.log("error", error);
     }
   };
-  console.log(values);
+  //console.log(values);
 
   return (
     <div>
