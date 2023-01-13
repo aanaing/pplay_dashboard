@@ -295,7 +295,7 @@ const Index = () => {
       border: 0,
     },
   }));
-
+  console.log(video);
   if (!video) {
     return (
       <div>
