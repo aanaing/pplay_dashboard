@@ -99,11 +99,11 @@ const CreateRoutine = ({ handleClose, routineAlert }) => {
       errorObject.day_1 = "day 1 is required";
       isErrorExit = true;
     }
-    if (!values.day_2){
-      errorObject.day_2 =  "day 2 is required";
+    if (!values.day_2) {
+      errorObject.day_2 = "day 2 is required";
       isErrorExit = true;
     }
-    if(!values.day_3){
+    if (!values.day_3) {
       errorObject.day_3 = "day 3 is required";
       isErrorExit = true;
     }
@@ -111,15 +111,15 @@ const CreateRoutine = ({ handleClose, routineAlert }) => {
       errorObject.day_4 = "day 4 is required";
       isErrorExit = true;
     }
-    if (!values.day_5){
-      errorObject.day_5 =  "day 5 is required";
+    if (!values.day_5) {
+      errorObject.day_5 = "day 5 is required";
       isErrorExit = true;
     }
-    if(!values.day_6){
+    if (!values.day_6) {
       errorObject.day_6 = "day 6 is required";
       isErrorExit = true;
     }
-    if(!values.day_7){
+    if (!values.day_7) {
       errorObject.day_7 = "day 7 is required";
       isErrorExit = true;
     }
@@ -134,6 +134,7 @@ const CreateRoutine = ({ handleClose, routineAlert }) => {
       console.log("error", error);
     }
   };
+  console.log(values);
 
   return (
     <div>
