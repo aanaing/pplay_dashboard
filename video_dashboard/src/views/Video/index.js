@@ -303,7 +303,7 @@ const Index = () => {
       </div>
     );
   }
-  //console.log(video.user_subscription_level);
+  console.log(video.user_subscription_level);
   return (
     <div>
       <div className="align">
