@@ -60,46 +60,21 @@ const CreateSpeExeRoutine = ({ handleClose, routineAlert }) => {
   //   }
   // }, [resultSub]);
 
+  //for user data
   useEffect(() => {
     loadUser();
   }, [loadUser]);
   useEffect(() => {
     if (resultUser.data) {
-      setUser(resultUser.data);
-      console.log(resultUser);
+      setUser(resultUser.data.users);
+      console.log(resultUser.data.users);
     }
   }, [resultUser]);
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleChange_1 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_2 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_3 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_4 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_5 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_6 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_7 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
   const [createRoutine] = useMutation(CREATE_SPECIAL_EXE_ROUTINE, {
     onError: (error) => {
       console.log("error : ", error);
@@ -195,7 +170,7 @@ const CreateSpeExeRoutine = ({ handleClose, routineAlert }) => {
       console.log("error", error);
     }
   };
-  console.log(values);
+  // console.log(values);
   return (
     <div>
       <Box
@@ -344,20 +319,22 @@ const CreateSpeExeRoutine = ({ handleClose, routineAlert }) => {
               error={errors.day_3 ? true : false}
               helperText={errors.day_3}
             />
-            <FormControl sx={{ m: 2 }} variant="outlined">
+            <FormControl sx={{ my: 2 }} variant="outlined">
               <InputLabel id="user_name">User ID</InputLabel>
               <Select
-                labelId="user_name"
+                labelId="User ID"
                 value={values.user_name}
                 label="User ID"
                 onChange={handleChange("user_name")}
                 error={errors.user_name ? true : false}
               >
-                {/* {user_name.map((user, index) => (
-                  <MenuItem value={user.user_name} key={index}>
-                    {user.username}
-                  </MenuItem>
-                ))} */}
+                {Array.isArray(user)
+                  ? user.map((u, index) => (
+                      <MenuItem value={u.id} key={index}>
+                        {u.username}
+                      </MenuItem>
+                    ))
+                  : "null"}
               </Select>
               {errors.review && (
                 <FormHelperText error>{errors.review}</FormHelperText>
