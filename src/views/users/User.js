@@ -100,7 +100,6 @@ const User = () => {
           <Link to="/" className="dashboard">
             Dashboard
           </Link>
-
           <Link to="/users" className="user">
             Users
           </Link>
