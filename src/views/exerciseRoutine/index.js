@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {
   CREATE_EXE_ROUTINE,
   DELETE_EXE_ROUTINE,
-  EXE_ROUTINE,
+  EXE_ROUTINE, SUB_TYPE_NAME,
 } from "../../gql/exeRoutine";
 import RemoveExeRoutine from "../../components/exerciseRoutine/RemoveExeRoutine";
 import CreateExeRoutine from "../../components/exerciseRoutine/CreateExeRoutine";
@@ -70,7 +70,9 @@ const Routine = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [offset, setOffset] = useState(0);
+  const [subType, setSubType] = useState([]);
   const [loadRoutine, resutRoutine] = useLazyQuery(EXE_ROUTINE);
+  const [loadSubType, resultSubType] = useLazyQuery(SUB_TYPE_NAME);
   const [routine, setRoutine] = useState({});
 
   // ---------------------****------------------------
@@ -78,14 +80,20 @@ const Routine = () => {
   // get data from db
   useEffect(() => {
     loadRoutine();
-  }, [loadRoutine]);
+    loadSubType();
+  }, [loadRoutine, loadSubType]);
 
   useEffect(() => {
     if (resutRoutine.data) {
       setRoutine(resutRoutine.data.exercise_routine);
     }
-  }, [resutRoutine]);
-  // console.log(routine);
+
+    if(resultSubType.data) {
+      setSubType(resultSubType.data.video_sub_type);
+    }
+  }, [resutRoutine], resultSubType);
+  console.log(routine);
+  console.log(subType);
 
   //for search button
   const handleSearch = (e) => {
