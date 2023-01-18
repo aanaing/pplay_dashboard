@@ -13,7 +13,7 @@ export const EXE_ROUTINE = gql`
       day_6
       day_7
       exercise_routine_name
-      fk_video_sub_type_id
+
       id
       updated_at
     }
@@ -40,7 +40,6 @@ export const CREATE_EXE_ROUTINE = gql`
     $day_5: String!
     $day_6: String!
     $day_7: String!
-    $sub_name: String!
   ) {
     insert_exercise_routine_one(
       object: {
@@ -52,7 +51,6 @@ export const CREATE_EXE_ROUTINE = gql`
         day_6: $day_6
         day_7: $day_7
         exercise_routine_name: $exercise_routine_name
-        fk_video_sub_type_id: $sub_name
       }
     ) {
       created_at
@@ -64,7 +62,7 @@ export const CREATE_EXE_ROUTINE = gql`
       day_6
       day_7
       exercise_routine_name
-      fk_video_sub_type_id
+
       id
       updated_at
     }
@@ -82,7 +80,6 @@ export const UPDATE_EXE_ROUTINE = gql`
     $day_6: String!
     $day_7: String!
     $exercise_routine_name: String!
-    $sub_name: String!
   ) {
     update_exercise_routine_by_pk(
       pk_columns: { id: $id }
@@ -95,7 +92,6 @@ export const UPDATE_EXE_ROUTINE = gql`
         day_6: $day_6
         day_7: $day_7
         exercise_routine_name: $exercise_routine_name
-        fk_video_sub_type_id: $sub_name
       }
     ) {
       exercise_routine_name
@@ -106,7 +102,6 @@ export const UPDATE_EXE_ROUTINE = gql`
       day_3
       day_2
       day_1
-      fk_video_sub_type_id
     }
   }
 `;

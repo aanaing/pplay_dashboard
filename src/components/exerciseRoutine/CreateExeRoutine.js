@@ -19,32 +19,12 @@ import { useState, useEffect } from "react";
 import { CREATE_EXE_ROUTINE, SUB_TYPE_NAME } from "../../gql/exeRoutine";
 
 const CreateExeRoutine = ({ handleClose, routineAlert }) => {
-  const [values, setValues] = useState({
-    exercise_routine_name: "",
-    sub_name: "",
-    day_1: "",
-    day_2: "",
-    day_3: "",
-    day_4: "",
-    day_5: "",
-    day_6: "",
-    day_7: "",
-  });
-  const [errors, setErrors] = useState({
-    exercise_routine_name: "",
-    sub_name: "",
-    day_1: "",
-    day_2: "",
-    day_3: "",
-    day_4: "",
-    day_5: "",
-    day_6: "",
-    day_7: "",
-  });
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
 
   const [loading, setLoading] = useState(false);
 
-  const [sub, setSub] = useState({});
+  const [sub, setSub] = useState([]);
   const [loadSub, resultSub] = useLazyQuery(SUB_TYPE_NAME);
   const [changeSubType, setChangeSubType] = useState(false);
 
@@ -59,6 +39,8 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
   }, [resultSub]);
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+    delete errors[prop];
+    setErrors(errors);
   };
 
   const [createRoutine] = useMutation(CREATE_EXE_ROUTINE, {
@@ -69,47 +51,24 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
     },
     onCompleted: () => {
       console.log("right");
-      setValues({
-        exercise_routine_name: "",
-        sub_name: "",
-        day_1: "",
-        day_2: "",
-        day_3: "",
-        day_4: "",
-        day_5: "",
-        day_6: "",
-        day_7: "",
-      });
-      setErrors({
-        exercise_routine_name: "",
-        sub_name: "",
-        day_1: "",
-        day_2: "",
-        day_3: "",
-        day_4: "",
-        day_5: "",
-        day_6: "",
-        day_7: "",
-      });
+      setValues({});
+      setErrors({});
       setLoading(false);
       routineAlert("New Routine has been added");
       handleClose();
     },
   });
 
+  const handleClosClearData = () => {
+    console.log("error");
+    setValues({});
+    setErrors({});
+    handleClose();
+  };
+
   const handleCreate = () => {
     setLoading(true);
-    setErrors({
-      exercise_routine_name: "",
-      sub_name: "",
-      day_1: "",
-      day_2: "",
-      day_3: "",
-      day_4: "",
-      day_5: "",
-      day_6: "",
-      day_7: "",
-    });
+    setErrors({});
     let isErrorExit = false;
     let errorObject = {};
 
@@ -156,7 +115,7 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
       console.log("error", error);
     }
   };
-
+  console.log(errors);
   return (
     <div>
       <Box
@@ -175,7 +134,7 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
           Create Routine
         </Typography>
         <Button
-          onClick={handleClose}
+          onClick={handleClosClearData}
           variant="contained"
           color="error"
           sx={{ mx: 4 }}
@@ -219,10 +178,9 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
               <InputLabel id="sub_type">day_1</InputLabel>
               <Select
                 labelId="day_1"
-                value={values.sub_name}
                 label="day_1"
-                onChange={handleChange("sub_name")}
-                error={errors.sub_name ? true : false}
+                onChange={handleChange("day_1")}
+                error={errors.day_1 ? true : false}
               >
                 {Array.isArray(sub)
                   ? sub.map((sub) => (
@@ -232,18 +190,17 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                     ))
                   : null}
               </Select>
-              {errors.d_1 && (
-                <FormHelperText error>{errors.d_1}</FormHelperText>
+              {errors.day_1 && (
+                <FormHelperText error>{errors.day_1}</FormHelperText>
               )}
             </FormControl>
             <FormControl variant="outlined" sx={{ my: 2 }}>
               <InputLabel id="sub_type">day_2</InputLabel>
               <Select
                 labelId="day_2"
-                value={values.sub_name}
                 label="day_2"
-                onChange={handleChange("sub_name")}
-                error={errors.sub_name ? true : false}
+                onChange={handleChange("day_2")}
+                error={errors.day_2 ? true : false}
               >
                 {Array.isArray(sub)
                   ? sub.map((sub) => (
@@ -253,18 +210,17 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                     ))
                   : null}
               </Select>
-              {errors.sub_name && (
-                <FormHelperText error>{errors.sub_name}</FormHelperText>
+              {errors.day_2 && (
+                <FormHelperText error>{errors.day_2}</FormHelperText>
               )}
             </FormControl>
             <FormControl variant="outlined" sx={{ my: 2 }}>
               <InputLabel id="sub_type">day_3</InputLabel>
               <Select
                 labelId="day_3"
-                value={values.sub_name}
                 label="day_3"
-                onChange={handleChange("sub_name")}
-                error={errors.sub_name ? true : false}
+                onChange={handleChange("day_3")}
+                error={errors.day_3 ? true : false}
               >
                 {Array.isArray(sub)
                   ? sub.map((sub) => (
@@ -274,8 +230,8 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                     ))
                   : null}
               </Select>
-              {errors.sub_name && (
-                <FormHelperText error>{errors.sub_name}</FormHelperText>
+              {errors.day_3 && (
+                <FormHelperText error>{errors.day_3}</FormHelperText>
               )}
             </FormControl>
           </Box>
@@ -305,10 +261,9 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
               <InputLabel id="sub_type">day_4</InputLabel>
               <Select
                 labelId="day_4"
-                value={values.sub_name}
                 label="day_4"
-                onChange={handleChange("sub_name")}
-                error={errors.sub_name ? true : false}
+                onChange={handleChange("day_4")}
+                error={errors.day_4 ? true : false}
               >
                 {Array.isArray(sub)
                   ? sub.map((sub) => (
@@ -318,18 +273,17 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                     ))
                   : null}
               </Select>
-              {errors.sub_name && (
-                <FormHelperText error>{errors.sub_name}</FormHelperText>
+              {errors.day_4 && (
+                <FormHelperText error>{errors.day_4}</FormHelperText>
               )}
             </FormControl>
             <FormControl variant="outlined" sx={{ my: 2 }}>
               <InputLabel id="sub_type">day_5</InputLabel>
               <Select
                 labelId="day_5"
-                value={values.sub_name}
                 label="day_5"
-                onChange={handleChange("sub_name")}
-                error={errors.sub_name ? true : false}
+                onChange={handleChange("day_5")}
+                error={errors.day_5 ? true : false}
               >
                 {Array.isArray(sub)
                   ? sub.map((sub) => (
@@ -339,18 +293,17 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                     ))
                   : null}
               </Select>
-              {errors.sub_name && (
-                <FormHelperText error>{errors.sub_name}</FormHelperText>
+              {errors.day_5 && (
+                <FormHelperText error>{errors.day_5}</FormHelperText>
               )}
             </FormControl>
             <FormControl variant="outlined" sx={{ my: 2 }}>
               <InputLabel id="sub_type">day_6</InputLabel>
               <Select
                 labelId="day_6"
-                value={values.sub_name}
                 label="day_6"
-                onChange={handleChange("sub_name")}
-                error={errors.sub_name ? true : false}
+                onChange={handleChange("day_6")}
+                error={errors.day_6 ? true : false}
               >
                 {Array.isArray(sub)
                   ? sub.map((sub) => (
@@ -360,18 +313,17 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                     ))
                   : null}
               </Select>
-              {errors.sub_name && (
-                <FormHelperText error>{errors.sub_name}</FormHelperText>
+              {errors.day_6 && (
+                <FormHelperText error>{errors.day_6}</FormHelperText>
               )}
             </FormControl>
             <FormControl variant="outlined" sx={{ my: 2 }}>
               <InputLabel id="sub_type">day_7</InputLabel>
               <Select
                 labelId="day_7"
-                value={values.sub_name}
                 label="day_7"
-                onChange={handleChange("sub_name")}
-                error={errors.sub_name ? true : false}
+                onChange={handleChange("day_7")}
+                error={errors.day_7 ? true : false}
               >
                 {Array.isArray(sub)
                   ? sub.map((sub) => (
@@ -381,8 +333,8 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                     ))
                   : null}
               </Select>
-              {errors.sub_name && (
-                <FormHelperText error>{errors.sub_name}</FormHelperText>
+              {errors.day_7 && (
+                <FormHelperText error>{errors.day_7}</FormHelperText>
               )}
             </FormControl>
           </Box>

@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import {
   DELETE_SPECIAL_EXE_ROUTINE,
   GET_ALL_SPECIAL_EXE_ROUTINE,
+  SUB_TYPE_NAME,
 } from "../../gql/specialExeRoutine";
-import RemoveSpeExeRoutine from "../../components/specialExeRoutine/RemoveSpeExeRoutine";
-import CreateSpeExeRoutine from "../../components/specialExeRoutine/CreateSpeExeRoutine";
-import UpdateSpeExeRoutine from "../../components/specialExeRoutine/UpdateSpeExeRoutine";
+import RemoveExeRoutine from "../../components/specialExeRoutine/RemoveSpeExeRoutine";
+import CreateExeRoutine from "../../components/specialExeRoutine/CreateSpeExeRoutine";
+import UpdateExeRoutine from "../../components/specialExeRoutine/UpdateSpeExeRoutine";
 import DirectionsIcon from "@mui/icons-material/Directions";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -50,7 +51,7 @@ const styleR = {
   backgroundColor: "#cecece",
 };
 
-const SpecialExeRoutine = () => {
+const Routine = () => {
   //for search button
   const [search, setSearch] = useState("");
 
@@ -69,23 +70,31 @@ const SpecialExeRoutine = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [offset, setOffset] = useState(0);
+  const [subType, setSubType] = useState([]);
   const [loadRoutine, resutRoutine] = useLazyQuery(GET_ALL_SPECIAL_EXE_ROUTINE);
+  const [loadSubType, resultSubType] = useLazyQuery(SUB_TYPE_NAME);
   const [routine, setRoutine] = useState({});
+  console.log(resutRoutine);
 
   // ---------------------****------------------------
 
   // get data from db
   useEffect(() => {
+    loadSubType();
     loadRoutine();
-  }, [loadRoutine]);
+  }, [loadSubType, loadRoutine]);
+
+  useEffect(() => {
+    if (resultSubType.data) {
+      setSubType(resultSubType.data.video_sub_type);
+    }
+  }, [resultSubType]);
 
   useEffect(() => {
     if (resutRoutine.data) {
       setRoutine(resutRoutine.data.special_exercise_routine);
     }
   }, [resutRoutine]);
-  // console.log(routine);
-
   //for search button
   const handleSearch = (e) => {
     setSearch(document.getElementById("search-by-title").value);
@@ -197,7 +206,9 @@ const SpecialExeRoutine = () => {
   if (!routine) {
     return <em>Loading .....</em>;
   }
-  //console.log(routine);
+
+  console.log(routine);
+
   return (
     <>
       <div className="align">
@@ -211,7 +222,7 @@ const SpecialExeRoutine = () => {
             <Link to="/" className="dashboard">
               Dashboard
             </Link>
-            <span>Customized Exercise Routine</span>
+            <span>Exercise routine</span>
           </Breadcrumbs>
         </div>
         {/* search */}
@@ -327,13 +338,55 @@ const SpecialExeRoutine = () => {
                         <StyledTableCell>
                           {row.special_exe_routine_name}
                         </StyledTableCell>
-                        <StyledTableCell>{row.day_1}</StyledTableCell>
-                        <StyledTableCell>{row.day_2}</StyledTableCell>
-                        <StyledTableCell>{row.day_3}</StyledTableCell>
-                        <StyledTableCell>{row.day_4}</StyledTableCell>
-                        <StyledTableCell>{row.day_5}</StyledTableCell>
-                        <StyledTableCell>{row.day_6}</StyledTableCell>
-                        <StyledTableCell>{row.day_7}</StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_1) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_2) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_3) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_4) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_5) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_6) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_7) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
                         <StyledTableCell>
                           <Button
                             onClick={() => handleRemoveOpen(row)}
@@ -377,7 +430,7 @@ const SpecialExeRoutine = () => {
           aria-describedby="keep-mounted-modal-description"
         >
           <Box style={styleR} sx={{ px: 4, py: 4, borderColor: "black" }}>
-            <RemoveSpeExeRoutine />
+            <RemoveExeRoutine />
             <Box sx={{ textAlign: "right", mt: 2 }}>
               <Button color="primary" onClick={handleRemoveClose}>
                 Cancel
@@ -398,7 +451,7 @@ const SpecialExeRoutine = () => {
           aria-describedby="keep-mounted-modal-description"
         >
           <Box style={style}>
-            <CreateSpeExeRoutine
+            <CreateExeRoutine
               routineAlert={routineAlert}
               handleClose={handleCreateClose}
             />
@@ -414,7 +467,7 @@ const SpecialExeRoutine = () => {
           aria-describedby="keep-mounted-modal-description"
         >
           <Box style={style}>
-            <UpdateSpeExeRoutine
+            <UpdateExeRoutine
               routineAlert={routineAlert}
               handleClose={handleUpdateClose}
               value={updateRoutine}
@@ -426,4 +479,4 @@ const SpecialExeRoutine = () => {
   );
 };
 
-export default SpecialExeRoutine;
+export default Routine;
