@@ -79,22 +79,21 @@ const Routine = () => {
 
   // get data from db
   useEffect(() => {
-    loadRoutine();
     loadSubType();
-  }, [loadRoutine, loadSubType]);
+    loadRoutine();
+  }, [loadSubType, loadRoutine]);
+
+  useEffect(() => {
+    if(resultSubType.data) {
+      setSubType(resultSubType.data.video_sub_type);
+    }
+  }, [resultSubType]);
 
   useEffect(() => {
     if (resutRoutine.data) {
       setRoutine(resutRoutine.data.exercise_routine);
     }
-
-    if(resultSubType.data) {
-      setSubType(resultSubType.data.video_sub_type);
-    }
-  }, [resutRoutine], resultSubType);
-  console.log(routine);
-  console.log(subType);
-
+  }, [resutRoutine])
   //for search button
   const handleSearch = (e) => {
     setSearch(document.getElementById("search-by-title").value);
@@ -206,6 +205,8 @@ const Routine = () => {
   if (!routine) {
     return <em>Loading .....</em>;
   }
+
+  console.log(subType);
 
   return (
     <>
@@ -336,13 +337,53 @@ const Routine = () => {
                         <StyledTableCell>
                           {row.exercise_routine_name}
                         </StyledTableCell>
-                        <StyledTableCell>{row.day_1}</StyledTableCell>
-                        <StyledTableCell>{row.day_2}</StyledTableCell>
-                        <StyledTableCell>{row.day_3}</StyledTableCell>
-                        <StyledTableCell>{row.day_4}</StyledTableCell>
-                        <StyledTableCell>{row.day_5}</StyledTableCell>
-                        <StyledTableCell>{row.day_6}</StyledTableCell>
-                        <StyledTableCell>{row.day_7}</StyledTableCell>
+                        <StyledTableCell>{subType.map(s => {
+                          if(s.id === row.day_1){
+                            return s.sub_type_name;
+                          }
+                        })}</StyledTableCell>
+                        <StyledTableCell>{
+                          subType.map(s => {
+                            if(s.id === row.day_2){
+                              return s.sub_type_name;
+                            }
+                          })
+                        }</StyledTableCell>
+                        <StyledTableCell>{
+                          subType.map(s => {
+                            if(s.id === row.day_3){
+                              return s.sub_type_name;
+                            }
+                          })
+                        }</StyledTableCell>
+                        <StyledTableCell>{
+                          subType.map(s => {
+                            if(s.id === row.day_4){
+                              return s.sub_type_name;
+                            }
+                          })
+                        }</StyledTableCell>
+                        <StyledTableCell>{
+                          subType.map(s => {
+                            if(s.id === row.day_5){
+                              return s.sub_type_name;
+                            }
+                          })
+                        }</StyledTableCell>
+                        <StyledTableCell>{
+                          subType.map(s => {
+                            if(s.id === row.day_6){
+                              return s.sub_type_name;
+                            }
+                          })
+                        }</StyledTableCell>
+                        <StyledTableCell>{
+                          subType.map(s => {
+                            if(s.id === row.day_7){
+                              return s.sub_type_name;
+                            }
+                          })
+                        }</StyledTableCell>
                         <StyledTableCell>
                           <Button
                             onClick={() => handleRemoveOpen(row)}

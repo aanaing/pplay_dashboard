@@ -38,10 +38,6 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
     }
   }, [resultSub]);
 
-
-  console.log(values);
-  console.log(sub);
-
   const [updateRoutine] = useMutation(UPDATE_EXE_ROUTINE, {
     onError: (error) => {
       console.log("error:", error);
@@ -183,12 +179,13 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
               InputLabelProps={{ shrink: "shrink" }}
             />
 
+            { values.day_1}
             <FormControl variant="outlined" sx={{ my: 2 }}>
               <InputLabel id="sub_type">day_1</InputLabel>
               <Select
                   labelId="day_1"
-                  label="day_1"
                   value={values.day_1}
+                  label="day_1"
                   onChange={handleChange("day_1")}
                   error={errors.day_1 ? true : false}
               >
@@ -204,12 +201,13 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
                   <FormHelperText error>{errors.day_1}</FormHelperText>
               )}
             </FormControl>
+            {values.day_2}
             <FormControl variant="outlined" sx={{ my: 2 }}>
               <InputLabel id="sub_type">day_2</InputLabel>
               <Select
                   labelId="day_2"
                   label="day_2"
-                  value={values.day_1}
+                  value={values.day_2}
                   onChange={handleChange("day_2")}
                   error={errors.day_2 ? true : false}
               >
@@ -231,7 +229,7 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
                   labelId="day_3"
                   label="day_3"
                   onChange={handleChange("day_3")}
-                  value={value.day_3}
+                  value={values.day_3}
                   error={errors.day_3 ? true : false}
               >
                 {Array.isArray(sub)
@@ -275,7 +273,7 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
                   labelId="day_4"
                   label="day_4"
                   onChange={handleChange("day_4")}
-                  value={value.day_4}
+                  value={values.day_4}
                   error={errors.day_4 ? true : false}
               >
                 {Array.isArray(sub)
@@ -296,7 +294,7 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
                   labelId="day_5"
                   label="day_5"
                   onChange={handleChange("day_5")}
-                  value={value.day_5}
+                  value={values.day_5}
                   error={errors.day_5 ? true : false}
               >
                 {Array.isArray(sub)
@@ -317,7 +315,7 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
                   labelId="day_6"
                   label="day_6"
                   onChange={handleChange("day_6")}
-                  value={value.day_6}
+                  value={values.day_6}
                   error={errors.day_6 ? true : false}
               >
                 {Array.isArray(sub)
@@ -338,7 +336,7 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
                   labelId="day_7"
                   label="day_7"
                   onChange={handleChange("day_7")}
-                  value={value.day_7}
+                  value={values.day_7}
                   error={errors.day_7 ? true : false}
               >
                 {Array.isArray(sub)
