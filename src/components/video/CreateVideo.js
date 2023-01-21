@@ -41,6 +41,10 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [videoAFile, setVideoAFile] = useState(null);
+  const [videoAFileUrl, setVideoAFileUrl] = useState(null);
+  const [videoBFile, setVideoBFile] = useState(null);
+  const [videoBFileUrl, setVideoBFileUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     main_type: "",
@@ -81,7 +85,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
   }, [resultSub]);
 
   const handleChange = (prop) => (event) => {
-    console.log(prop, event.target.value);
+    // console.log(prop, event.target.value);
     if (event.target.value === "ZUMBA") {
       setShowSubInput(true);
     }
@@ -102,9 +106,33 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       setImageFileUrl(result.getImageUploadUrl.imageUploadUrl);
       setValues({
         ...values,
-        video_url_a: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
-        video_url_b: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
         thumbnail_image_url: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
+      });
+    },
+  });
+
+  const [getVideoAUrl] = useMutation(GET_IMAGE_UPLOAD_URL, {
+    onError: (error) => {
+      console.log("error : ", error);
+    },
+    onCompleted: (result) => {
+      setVideoAFileUrl(result.getImageUploadUrl.imageUploadUrl);
+      setValues({
+        ...values,
+        video_url_a: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
+      });
+    },
+  });
+
+  const [getVideoBUrl] = useMutation(GET_IMAGE_UPLOAD_URL, {
+    onError: (error) => {
+      console.log("error : ", error);
+    },
+    onCompleted: (result) => {
+      setVideoBFileUrl(result.getImageUploadUrl.imageUploadUrl);
+      setValues({
+        ...values,
+        video_url_b: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
       });
     },
   });
@@ -223,13 +251,13 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       if (videofile.size > 104857600) {
         setErrors({
           ...errors,
-          video_url_a: "Video file size must be smaller than 50MB.",
+          video_url_a: "Video file size must be smaller than 100MB.",
         });
         return;
       }
-      setImageFile(videofile);
+      setVideoAFile(videofile);
       //setImagePreview(URL.createObjectURL(videofile));
-      getImageUrl();
+      getVideoAUrl();
     }
   };
   const videoChangeB = async (e) => {
@@ -243,16 +271,16 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
         });
         return;
       }
-      if (videofile.size > 1048576000) {
+      if (videofile.size > 104857600) {
         setErrors({
           ...errors,
-          video_url_b: "Video file size must be smaller than 50MB.",
+          video_url_b: "Video file size must be smaller than 100MB.",
         });
         return;
       }
-      setImageFile(videofile);
+      setVideoBFile(videofile);
       //setImagePreview(URL.createObjectURL(videofile));
-      getImageUrl();
+      getVideoBUrl();
     }
   };
 
@@ -273,11 +301,11 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
     let isErrorExit = false;
     let errorObject = {};
 
-    if (!values.video_url_a || !imageFile) {
+    if (!values.video_url_a || !videoAFile) {
       errorObject.video_url_a = "Video A field is required.";
       isErrorExit = true;
     }
-    if (!values.video_url_b || !imageFile) {
+    if (!values.video_url_b || !videoBFile) {
       errorObject.video_url_b = "Video B field is required.";
       isErrorExit = true;
     }
@@ -322,10 +350,12 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       console.log(errorObject);
       return;
     }
-    console.log(values);
+    //console.log(values);
 
     try {
       await imageService.uploadImage(imageFileUrl, imageFile);
+      await imageService.uploadImage(videoAFileUrl, videoAFile);
+      await imageService.uploadImage(videoBFileUrl, videoBFile);
       if (values.main_type === "ZUMBA") {
         createVideoZumba({ variables: { ...values } });
       } else {
@@ -335,7 +365,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       console.log("error : ", error);
     }
   };
-  //console.log(values);
+  console.log(values);
   return (
     <div>
       <Box
