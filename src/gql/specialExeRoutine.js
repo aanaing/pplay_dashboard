@@ -69,13 +69,13 @@ export const DELETE_SPECIAL_EXE_ROUTINE = gql`
 export const CREATE_SPECIAL_EXE_ROUTINE = gql`
   mutation MyMutation(
     $special_exe_routine_name: String!
-    $day_1: String!
-    $day_2: String!
-    $day_3: String!
-    $day_4: String!
-    $day_5: String!
-    $day_6: String!
-    $day_7: String!
+    $day_1: uuid!
+    $day_2: uuid!
+    $day_3: uuid!
+    $day_4: uuid!
+    $day_5: uuid!
+    $day_6: uuid!
+    $day_7: uuid!
     $user_name: uuid!
   ) {
     insert_special_exercise_routine_one(
@@ -112,13 +112,13 @@ export const UPDATE_SPECIAL_EXE_ROUTINE = gql`
   mutation MyMutation(
     $id: uuid!
     $special_exe_routine_name: String!
-    $day_1: String!
-    $day_2: String!
-    $day_3: String!
-    $day_4: String!
-    $day_5: String!
-    $day_6: String!
-    $day_7: String!
+    $day_1: uuid!
+    $day_2: uuid!
+    $day_3: uuid!
+    $day_4: uuid!
+    $day_5: uuid!
+    $day_6: uuid!
+    $day_7: uuid!
     $user_name: uuid!
   ) {
     update_special_exercise_routine_by_pk(
