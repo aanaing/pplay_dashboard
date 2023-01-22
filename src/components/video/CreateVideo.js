@@ -46,33 +46,12 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
   const [videoBFile, setVideoBFile] = useState(null);
   const [videoBFileUrl, setVideoBFileUrl] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [values, setValues] = useState({
-    main_type: "",
-    package_type: "",
-    promotion: "",
-    target_period: "",
-    thumbnail_image_url: "",
-    video_package_name: "",
-    video_url_a: "",
-    video_url_b: "",
-    duration: "",
-    sub_name: "",
-  });
-  const [errors, setErrors] = useState({
-    main_type: "",
-    package_type: "",
-    promotion: "",
-    target_period: "",
-    thumbnail_image_url: "",
-    video_package_name: "",
-    video_url_a: "",
-    video_url_b: "",
-    duration: "",
-    sub_name: "",
-  });
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
   const [sub, setSub] = useState({});
   const [loadSub, resultSub] = useLazyQuery(SUB_TYPE_NAME);
   const [showSubInput, setShowSubInput] = useState(false);
+  console.log(values);
 
   useEffect(() => {
     loadSub();
@@ -143,30 +122,8 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       setLoading(false);
     },
     onCompleted: () => {
-      setValues({
-        main_type: "",
-        package_type: "",
-        promotion: "",
-        target_period: "",
-        thumbnail_image_url: "",
-        video_package_name: "",
-        video_url_a: "",
-        video_url_b: "",
-        duration: "",
-        sub_name: "",
-      });
-      setErrors({
-        main_type: "",
-        package_type: "",
-        promotion: "",
-        target_period: "",
-        thumbnail_image_url: "",
-        video_package_name: "",
-        video_url_a: "",
-        video_url_b: "",
-        duration: "",
-        sub_name: "",
-      });
+      setValues({});
+      setErrors({});
       setImageFile("");
       setImagePreview("");
       setLoading(false);
@@ -181,30 +138,8 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       setLoading(false);
     },
     onCompleted: () => {
-      setValues({
-        main_type: "",
-        package_type: "",
-        promotion: "",
-        target_period: "",
-        thumbnail_image_url: "",
-        video_package_name: "",
-        video_url_a: "",
-        video_url_b: "",
-        duration: "",
-        //        sub_name: "",
-      });
-      setErrors({
-        main_type: "",
-        package_type: "",
-        promotion: "",
-        target_period: "",
-        thumbnail_image_url: "",
-        video_package_name: "",
-        video_url_a: "",
-        video_url_b: "",
-        duration: "",
-        //sub_name: "",
-      });
+      setValues({});
+      setErrors({});
       setImageFile("");
       setImagePreview("");
       setLoading(false);
@@ -286,18 +221,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
 
   const handleCreate = async () => {
     setLoading(true);
-    setErrors({
-      main_type: "",
-      package_type: "",
-      promotion: "",
-      target_period: "",
-      thumbnail_image_url: "",
-      video_package_name: "",
-      video_url_a: "",
-      video_url_b: "",
-      duration: "",
-      sub_name: "",
-    });
+    setErrors({});
     let isErrorExit = false;
     let errorObject = {};
 
@@ -350,7 +274,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       console.log(errorObject);
       return;
     }
-    //console.log(values);
+    console.log("create button 2", values);
 
     try {
       await imageService.uploadImage(imageFileUrl, imageFile);
@@ -361,10 +285,14 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
       } else {
         createVideo({ variables: { ...values } });
       }
+      setValues({});
+      setErrors({});
+      console.log("create button 3", values);
     } catch (error) {
       console.log("error : ", error);
     }
   };
+
   console.log(values);
   return (
     <div>
@@ -473,7 +401,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
               id="video_package_name"
               label="Video Package Name"
               sx={{ my: 2 }}
-              value={values.video_package_name}
+              // value={values.video_package_name}
               onChange={handleChange("video_package_name")}
               error={errors.video_package_name ? true : false}
               helperText={errors.video_package_name}
@@ -483,7 +411,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
               <InputLabel id="main_type">Main Type</InputLabel>
               <Select
                 labelId="main_type"
-                value={values.main_type}
+                // value={values.main_type}
                 label="Main Type"
                 onChange={handleChange("main_type")}
                 error={errors.main_type ? true : false}
@@ -522,7 +450,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
               <InputLabel id="main_type">Package Type</InputLabel>
               <Select
                 labelId="main_type"
-                value={values.package_type}
+                // value={values.package_type}
                 label="Package Type"
                 onChange={handleChange("package_type")}
                 error={errors.package_type ? true : false}
@@ -541,7 +469,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
               id="target_period"
               label="target_period"
               sx={{ my: 2 }}
-              value={values.target_period}
+              // value={values.target_period}
               onChange={handleChange("target_period")}
               error={errors.target_period ? true : false}
               helperText={errors.target_period}
@@ -550,7 +478,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
               id="duration"
               label="duration"
               sx={{ my: 2 }}
-              value={values.duration}
+              // value={values.duration}
               onChange={handleChange("duration")}
               error={errors.duration ? true : false}
               helperText={errors.duration}
@@ -559,7 +487,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
               <InputLabel id="promotion">Promotion</InputLabel>
               <Select
                 labelId="promotion"
-                value={values.promotion}
+                // value={values.promotion}
                 label="Promotion"
                 onChange={handleChange("promotion")}
                 error={errors.promotion ? true : false}
@@ -579,7 +507,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
               <InputLabel id="sub_type">Sub type</InputLabel>
               <Select
                 labelId="sub_type"
-                value={values.sub_name}
+                // value={values.sub_name}
                 label="sub_type"
                 onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}

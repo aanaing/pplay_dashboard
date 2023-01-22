@@ -232,6 +232,7 @@ const Index = () => {
     if (!removeVideo) {
       return;
     }
+
     let image_url = removeVideo.thumbnail_image_url;
     let image_name = image_url.substring(
       image_url.lastIndexOf("/") + 1,
@@ -241,6 +242,7 @@ const Index = () => {
     deleteVideoPk({ variables: { id: removeVideo.id } });
     deleteImage({ variables: { image_name: image_name } });
     result.refetch();
+    setRemoveOpen(false);
   };
 
   //----------------- Start Add Video -------------------
@@ -554,9 +556,7 @@ const Index = () => {
                     </StyledTableCell>
                     <StyledTableCell>{row.main_type}</StyledTableCell>
                     <StyledTableCell>
-                      {row.main_type === "ZUMBA"
-                        ? " - "
-                        : row.video_sub_type
+                      { row.video_sub_type
                         ? row.video_sub_type.sub_type_name
                         : "-"}
                     </StyledTableCell>
@@ -634,40 +634,47 @@ const Index = () => {
         </Box>
       </Modal>
       {/* Add Video */}
-      <div>
-        <Modal
-          keepMounted
-          open={createOpen}
-          onClose={handleCreateClose}
-          aria-labelledby="keep-mounted-modal-title"
-          aria-descripedby="keep-mounted-modal-description"
-        >
-          <Box style={style}>
-            <CreateVideo
-              videoAlert={videoAlert}
-              handleClose={handleCreateClose}
-            />
-          </Box>
-        </Modal>
-      </div>
+      {
+        createOpen && <div>
+            <Modal
+                keepMounted
+                open={createOpen}
+                onClose={handleCreateClose}
+                aria-labelledby="keep-mounted-modal-title"
+                aria-descripedby="keep-mounted-modal-description"
+            >
+              <Box style={style}>
+                <CreateVideo
+                    videoAlert={videoAlert}
+                    handleClose={handleCreateClose}
+                />
+              </Box>
+            </Modal>
+          </div>
+      }
+
       {/* Update Video */}
-      <div>
-        <Modal
-          keepMounted
-          open={updateOpen}
-          onClose={handleUpdateClose}
-          aria-labelledby="keep-mounted-modal-title"
-          aria-descripedby="keep-mounted-modal-description"
-        >
-          <Box sx={style}>
-            <UpdateVideo
-              videoAlert={videoAlert}
-              handleClose={handleUpdateClose}
-              video={updateVideo}
-            />
-          </Box>
-        </Modal>
-      </div>
+
+      {
+        updateOpen && <div>
+            <Modal
+                keepMounted
+                open={updateOpen}
+                onClose={handleUpdateClose}
+                aria-labelledby="keep-mounted-modal-title"
+                aria-descripedby="keep-mounted-modal-description"
+            >
+              <Box sx={style}>
+                <UpdateVideo
+                    videoAlert={videoAlert}
+                    handleClose={handleUpdateClose}
+                    video={updateVideo}
+                />
+              </Box>
+            </Modal>
+          </div>
+      }
+
     </div>
   );
 };
