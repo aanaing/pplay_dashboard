@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import {
   CREATE_EXE_ROUTINE,
   DELETE_EXE_ROUTINE,
-  EXE_ROUTINE, SUB_TYPE_NAME,
+  EXE_ROUTINE,
+  SUB_TYPE_NAME,
 } from "../../gql/exeRoutine";
 import RemoveExeRoutine from "../../components/exerciseRoutine/RemoveExeRoutine";
 import CreateExeRoutine from "../../components/exerciseRoutine/CreateExeRoutine";
@@ -84,7 +85,7 @@ const Routine = () => {
   }, [loadSubType, loadRoutine]);
 
   useEffect(() => {
-    if(resultSubType.data) {
+    if (resultSubType.data) {
       setSubType(resultSubType.data.video_sub_type);
     }
   }, [resultSubType]);
@@ -94,7 +95,7 @@ const Routine = () => {
       setRoutine(resutRoutine.data.exercise_routine);
       console.log(resutRoutine.data.exercise_routine);
     }
-  }, [resutRoutine])
+  }, [resutRoutine]);
 
   //for search button
   const handleSearch = (e) => {
@@ -163,7 +164,7 @@ const Routine = () => {
     setUpdateOpen(true);
   };
   const handleUpdateClose = () => {
-    console.log("index");
+    //console.log("index");
     resutRoutine.refetch();
     setUpdateOpen(false);
   };
@@ -339,53 +340,55 @@ const Routine = () => {
                         <StyledTableCell>
                           {row.exercise_routine_name}
                         </StyledTableCell>
-                        <StyledTableCell>{subType.map(s => {
-                          if(s.id === row.day_1){
-                            return s.sub_type_name;
-                          }
-                        })}</StyledTableCell>
-                        <StyledTableCell>{
-                          subType.map(s => {
-                            if(s.id === row.day_2){
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_1) {
                               return s.sub_type_name;
                             }
-                          })
-                        }</StyledTableCell>
-                        <StyledTableCell>{
-                          subType.map(s => {
-                            if(s.id === row.day_3){
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_2) {
                               return s.sub_type_name;
                             }
-                          })
-                        }</StyledTableCell>
-                        <StyledTableCell>{
-                          subType.map(s => {
-                            if(s.id === row.day_4){
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_3) {
                               return s.sub_type_name;
                             }
-                          })
-                        }</StyledTableCell>
-                        <StyledTableCell>{
-                          subType.map(s => {
-                            if(s.id === row.day_5){
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_4) {
                               return s.sub_type_name;
                             }
-                          })
-                        }</StyledTableCell>
-                        <StyledTableCell>{
-                          subType.map(s => {
-                            if(s.id === row.day_6){
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_5) {
                               return s.sub_type_name;
                             }
-                          })
-                        }</StyledTableCell>
-                        <StyledTableCell>{
-                          subType.map(s => {
-                            if(s.id === row.day_7){
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_6) {
                               return s.sub_type_name;
                             }
-                          })
-                        }</StyledTableCell>
+                          })}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {subType.map((s) => {
+                            if (s.id === row.day_7) {
+                              return s.sub_type_name;
+                            }
+                          })}
+                        </StyledTableCell>
                         <StyledTableCell>
                           <Button
                             onClick={() => handleRemoveOpen(row)}
