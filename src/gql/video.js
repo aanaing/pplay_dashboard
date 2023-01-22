@@ -203,14 +203,12 @@ export const UPDATE_VIDEOS_ZUMBA = gql`
     $video_url_b: String!
     $thumbnail_image_url: String!
     $promotion: Boolean!
-    $sub_name: uuid!
     $package_type: Int!
   ) {
     update_video_list_by_pk(
       pk_columns: { id: $id }
       _set: {
         duration: $duration
-        fk_video_sub_type_id: $sub_name
         fk_user_subscription_level_id: $package_type
         main_type: $main_type
         promotion: $promotion
@@ -223,7 +221,6 @@ export const UPDATE_VIDEOS_ZUMBA = gql`
     ) {
       created_at
       duration
-      fk_video_sub_type_id
       fk_user_subscription_level_id
       id
       main_type
@@ -237,10 +234,6 @@ export const UPDATE_VIDEOS_ZUMBA = gql`
       user_subscription_level {
         id
         subscription_type
-      }
-      video_sub_type {
-        id
-        sub_type_name
       }
     }
   }

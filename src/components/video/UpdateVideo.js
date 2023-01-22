@@ -212,6 +212,13 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
         duration: video.duration,
         sub_name: video.video_sub_type ? video.video_sub_type.id : "-",
       });
+      setImagePreview(video.thumbnail_image_url);
+    }
+
+    if(video.main_type === "ZUMBA"){
+      setShowSubInput(true);
+    }else{
+      setShowSubInput(false);
     }
     //console.log(video);
     //console.log(video[0].thumbnail_image_url);
@@ -375,6 +382,9 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
         deleteImage({ variables: { image_name: oldImageName } });
       }
       if (values.main_type === "ZUMBA") {
+        delete values.sub_name;
+        setValues(values);
+        console.log("update video 1", values);
         updateVideosZumba({ variables: { ...values, id: video.id } });
       } else {
         updateVideos({ variables: { ...values, id: video.id } });
