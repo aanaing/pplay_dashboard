@@ -11,61 +11,72 @@ import {
   Typography,
   Select,
   MenuItem,
+  FormHelperText,
 } from "@mui/material";
 import { Box } from "@mui/system";
-
+import { validateSDL } from "graphql/validation/validate";
 import { useEffect, useState } from "react";
-import { CREATE_EXE_ROUTINE, UPDATE_EXE_ROUTINE } from "../../gql/exeRoutine";
+import {
+  CREATE_EXE_ROUTINE,
+  SUB_TYPE_NAME,
+  UPDATE_SPECIAL_EXE_ROUTINE,
+  USER_ID,
+} from "../../gql/specialExeRoutine";
 
 const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
-  const [values, setValues] = useState({
-    exercise_routine_name: "",
-    day_1: "",
-    day_2: "",
-    day_3: "",
-    day_4: "",
-    day_5: "",
-    day_6: "",
-    day_7: "",
-  });
-  const [errors, setErrors] = useState({
-    exercise_routine_name: "",
-    day_1: "",
-    day_2: "",
-    day_3: "",
-    day_4: "",
-    day_5: "",
-    day_6: "",
-    day_7: "",
-  });
+  const [values, setValues] = useState(null);
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [sub, setSub] = useState(null);
+  const [loadSub, resultSub] = useLazyQuery(SUB_TYPE_NAME);
+  const [user, setUser] = useState([]);
+  const [loadUser, resultUser] = useLazyQuery(USER_ID);
 
-  const [updateRoutine] = useMutation(UPDATE_EXE_ROUTINE, {
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
+
+  useEffect(() => {
+    if (resultUser.data) {
+      setUser(resultUser.data.users);
+    }
+  }, [resultUser]);
+
+  useEffect(() => {
+    console.log("value work");
+    if (value) {
+      value = Object.assign({}, value);
+      delete value.created_at;
+      delete value.updated_at;
+      delete value.__typename;
+      console.log("original", value);
+      setValues(value);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    loadSub();
+  }, [loadSub]);
+
+  useEffect(() => {
+    if (resultSub.data) {
+      setSub(resultSub.data.video_sub_type);
+    }
+  }, [resultSub]);
+
+  // if(values){
+  //   values.day_1 = "min khant";
+  //   console.log("updateValues", values.day_1);
+  // }
+
+  const [updateRoutine] = useMutation(UPDATE_SPECIAL_EXE_ROUTINE, {
     onError: (error) => {
       console.log("error:", error);
       setLoading(false);
     },
     onCompleted: (data) => {
-      setValues({
-        exercise_routine_name: "",
-        day_1: "",
-        day_2: "",
-        day_3: "",
-        day_4: "",
-        day_5: "",
-        day_6: "",
-        day_7: "",
-      });
-      setErrors({
-        exercise_routine_name: "",
-        day_1: "",
-        day_2: "",
-        day_3: "",
-        day_4: "",
-        day_5: "",
-        day_6: "",
-        day_7: "",
-      });
+      setValues({});
+      setErrors({});
       setLoading(false);
       routineAlert("Routine has been updated");
       handleUpdateClose();
@@ -80,16 +91,7 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
 
   const handleUpdateClose = () => {
     setValues({});
-    setErrors({
-      exercise_routine_name: "",
-      day_1: "",
-      day_2: "",
-      day_3: "",
-      day_4: "",
-      day_5: "",
-      day_6: "",
-      day_7: "",
-    });
+    setErrors({});
     handleClose();
   };
   const handleChange = (prop) => (event) => {
@@ -98,16 +100,7 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
 
   const handleCreate = () => {
     setLoading(true);
-    setErrors({
-      exercise_routine_name: "",
-      day_1: "",
-      day_2: "",
-      day_3: "",
-      day_4: "",
-      day_5: "",
-      day_6: "",
-      day_7: "",
-    });
+    setErrors({});
 
     let isErrorExit = false;
     let errorObject = {};
@@ -158,6 +151,16 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
     }
   };
 
+  if (!values) {
+    console.log("no values, loading");
+    return "no values";
+  }
+
+  if (!value) {
+    console.log("no data,  loading");
+    return "no data";
+  }
+
   return (
     <div>
       <Box
@@ -192,7 +195,7 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
           bgcolor: "white",
           maxWidth: 820,
           borderRadius: 0,
-          height: 500,
+          height: 580,
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
         }}
@@ -214,35 +217,99 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
               onChange={handleChange("exercise_routine_name")}
               error={errors.exercise_routine_name ? true : false}
               helperText={errors.exercise_routine_name}
+              InputLabelProps={{ shrink: "shrink" }}
             />
 
-            <TextField
-              id="day_1"
-              label="day_1"
-              sx={{ my: 2 }}
-              value={values.day_1}
-              onChange={handleChange("day_1")}
-              error={errors.day_1 ? true : false}
-              helperText={errors.day_1}
-            />
-            <TextField
-              id="day_2"
-              label="day_2"
-              sx={{ my: 2 }}
-              value={values.day_2}
-              onChange={handleChange("day_2")}
-              error={errors.day_2 ? true : false}
-              helperText={errors.day_2}
-            />
-            <TextField
-              id="day_3"
-              label="day_3"
-              sx={{ my: 2 }}
-              value={values.day_3}
-              onChange={handleChange("day_3")}
-              error={errors.day_3 ? true : false}
-              helperText={errors.day_3}
-            />
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="sub_type">day_1</InputLabel>
+              <Select
+                labelId="day_1"
+                value={values.day_1}
+                label="day_1"
+                onChange={handleChange("day_1")}
+                error={errors.day_1 ? true : false}
+              >
+                {Array.isArray(sub)
+                  ? sub.map((sub) => {
+                      if (sub.id === values.day_1) {
+                        console.log("default values");
+                      }
+                      console.log(sub.id);
+                      return (
+                        <MenuItem key={sub.id} value={sub.id}>
+                          {sub.sub_type_name}
+                        </MenuItem>
+                      );
+                    })
+                  : null}
+              </Select>
+              {errors.day_1 && (
+                <FormHelperText error>{errors.day_1}</FormHelperText>
+              )}
+            </FormControl>
+
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="sub_type">day_2</InputLabel>
+              <Select
+                labelId="day_2"
+                label="day_2"
+                value={values.day_2}
+                onChange={handleChange("day_2")}
+                error={errors.day_2 ? true : false}
+              >
+                {Array.isArray(sub)
+                  ? sub.map((sub) => (
+                      <MenuItem key={sub.id} value={sub.id}>
+                        {sub.sub_type_name}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+              {errors.day_2 && (
+                <FormHelperText error>{errors.day_2}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="sub_type">day_3</InputLabel>
+              <Select
+                labelId="day_3"
+                label="day_3"
+                onChange={handleChange("day_3")}
+                value={values.day_3}
+                error={errors.day_3 ? true : false}
+              >
+                {Array.isArray(sub)
+                  ? sub.map((sub) => (
+                      <MenuItem key={sub.id} value={sub.id}>
+                        {sub.sub_type_name}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+              {errors.day_3 && (
+                <FormHelperText error>{errors.day_3}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="User ID">User ID</InputLabel>
+              <Select
+                labelId="User ID"
+                label="User ID"
+                onChange={handleChange("user_name")}
+                error={errors.user_name ? true : false}
+              >
+                {Array.isArray(user)
+                  ? user.map((u) => (
+                      <MenuItem key={u.id} value={u.id}>
+                        {u.username}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+              {errors.day_3 && (
+                <FormHelperText error>{errors.day_3}</FormHelperText>
+              )}
+            </FormControl>
           </Box>
           <LoadingButton
             variant="contained"
@@ -266,42 +333,90 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
               minWidth: 330,
             }}
           >
-            <TextField
-              id="day_4"
-              label="day_4"
-              sx={{ my: 2 }}
-              value={values.day_4}
-              onChange={handleChange("day_4")}
-              error={errors.day_4 ? true : false}
-              helperText={errors.day_4}
-            />
-            <TextField
-              id="day_5"
-              label="day_5"
-              sx={{ my: 2 }}
-              value={values.day_5}
-              onChange={handleChange("day_5")}
-              error={errors.day_5 ? true : false}
-              helperText={errors.day_5}
-            />
-            <TextField
-              id="day_6"
-              label="day_6"
-              sx={{ my: 2 }}
-              value={values.day_6}
-              onChange={handleChange("day_6")}
-              error={errors.day_6 ? true : false}
-              helperText={errors.day_6}
-            />
-            <TextField
-              id="day_7"
-              label="day_7"
-              sx={{ my: 2 }}
-              value={values.day_7}
-              onChange={handleChange("day_7")}
-              error={errors.day_7 ? true : false}
-              helperText={errors.day_7}
-            />
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="sub_type">day_4</InputLabel>
+              <Select
+                labelId="day_4"
+                label="day_4"
+                onChange={handleChange("day_4")}
+                value={values.day_4}
+                error={errors.day_4 ? true : false}
+              >
+                {Array.isArray(sub)
+                  ? sub.map((sub) => (
+                      <MenuItem key={sub.id} value={sub.id}>
+                        {sub.sub_type_name}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+              {errors.day_4 && (
+                <FormHelperText error>{errors.day_4}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="sub_type">day_5</InputLabel>
+              <Select
+                labelId="day_5"
+                label="day_5"
+                onChange={handleChange("day_5")}
+                value={values.day_5}
+                error={errors.day_5 ? true : false}
+              >
+                {Array.isArray(sub)
+                  ? sub.map((sub) => (
+                      <MenuItem key={sub.id} value={sub.id}>
+                        {sub.sub_type_name}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+              {errors.day_5 && (
+                <FormHelperText error>{errors.day_5}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="sub_type">day_6</InputLabel>
+              <Select
+                labelId="day_6"
+                label="day_6"
+                onChange={handleChange("day_6")}
+                value={values.day_6}
+                error={errors.day_6 ? true : false}
+              >
+                {Array.isArray(sub)
+                  ? sub.map((sub) => (
+                      <MenuItem key={sub.id} value={sub.id}>
+                        {sub.sub_type_name}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+              {errors.day_6 && (
+                <FormHelperText error>{errors.day_6}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl variant="outlined" sx={{ my: 2 }}>
+              <InputLabel id="sub_type">day_7</InputLabel>
+              <Select
+                labelId="day_7"
+                label="day_7"
+                onChange={handleChange("day_7")}
+                value={values.day_7}
+                error={errors.day_7 ? true : false}
+              >
+                {Array.isArray(sub)
+                  ? sub.map((sub) => (
+                      <MenuItem key={sub.id} value={sub.id}>
+                        {sub.sub_type_name}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+              {errors.day_7 && (
+                <FormHelperText error>{errors.day_7}</FormHelperText>
+              )}
+            </FormControl>
           </Box>
         </div>
       </Card>
