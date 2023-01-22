@@ -95,7 +95,7 @@ const CreateVideo = ({ handleClose, videoAlert }) => {
     }
 
     setValues({ ...values, [prop]: event.target.value });
-    console.log(values);
+    // console.log(values);
   };
 
   const [getImageUrl] = useMutation(GET_IMAGE_UPLOAD_URL, {

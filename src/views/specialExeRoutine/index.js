@@ -207,7 +207,7 @@ const Routine = () => {
     return <em>Loading .....</em>;
   }
 
-  console.log(routine);
+  // console.log(routine);
 
   return (
     <>

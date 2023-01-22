@@ -87,7 +87,7 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
     setValues(value);
   }, [value]);
 
-  //console.log(values);
+  console.log(values);
 
   const handleUpdateClose = () => {
     setValues({});

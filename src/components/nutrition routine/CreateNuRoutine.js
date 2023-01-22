@@ -19,76 +19,8 @@ import { useState, useEffect } from "react";
 import { UPDATE_NUROUTINE, SUB_TYPE_NAME } from "../../gql/nuRoutine";
 
 const CreateNuRoutine = ({ handleClose, routineAlert }) => {
-  const [values, setValues] = useState({
-    nutrition_routine_name: "",
-    sub_name: "",
-    day_1: "",
-    day_2: "",
-    day_3: "",
-    day_4: "",
-    day_5: "",
-    day_6: "",
-    day_7: "",
-    day_8: "",
-    day_9: "",
-    day_10: "",
-    day_11: "",
-    day_12: "",
-    day_13: "",
-    day_14: "",
-    day_15: "",
-    day_16: "",
-    day_17: "",
-    day_18: "",
-    day_19: "",
-    day_20: "",
-    day_21: "",
-    day_22: "",
-    day_23: "",
-    day_24: "",
-    day_25: "",
-    day_26: "",
-    day_27: "",
-    day_28: "",
-    day_29: "",
-    day_30: "",
-    day_31: "",
-  });
-  const [errors, setErrors] = useState({
-    nutrition_routine_name: "",
-    sub_name: "",
-    day_1: "",
-    day_2: "",
-    day_3: "",
-    day_4: "",
-    day_5: "",
-    day_6: "",
-    day_7: "",
-    day_8: "",
-    day_9: "",
-    day_10: "",
-    day_11: "",
-    day_12: "",
-    day_13: "",
-    day_14: "",
-    day_15: "",
-    day_16: "",
-    day_17: "",
-    day_18: "",
-    day_19: "",
-    day_20: "",
-    day_21: "",
-    day_22: "",
-    day_23: "",
-    day_24: "",
-    day_25: "",
-    day_26: "",
-    day_27: "",
-    day_28: "",
-    day_29: "",
-    day_30: "",
-    day_31: "",
-  });
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
 
   const [loading, setLoading] = useState(false);
 
@@ -109,33 +41,6 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleChange_1 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_2 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_3 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_4 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_5 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_6 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleChange_7 = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
   const [createRoutine] = useMutation(UPDATE_NUROUTINE, {
     onError: (error) => {
       console.log("error : ", error);
@@ -144,76 +49,8 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
     },
     onCompleted: () => {
       console.log("right");
-      setValues({
-        nutrition_routine_name: "",
-        sub_name: "",
-        day_1: "",
-        day_2: "",
-        day_3: "",
-        day_4: "",
-        day_5: "",
-        day_6: "",
-        day_7: "",
-        day_8: "",
-        day_9: "",
-        day_10: "",
-        day_11: "",
-        day_12: "",
-        day_13: "",
-        day_14: "",
-        day_15: "",
-        day_16: "",
-        day_17: "",
-        day_18: "",
-        day_19: "",
-        day_20: "",
-        day_21: "",
-        day_22: "",
-        day_23: "",
-        day_24: "",
-        day_25: "",
-        day_26: "",
-        day_27: "",
-        day_28: "",
-        day_29: "",
-        day_30: "",
-        day_31: "",
-      });
-      setErrors({
-        nutrition_routine_name: "",
-        sub_name: "",
-        day_1: "",
-        day_2: "",
-        day_3: "",
-        day_4: "",
-        day_5: "",
-        day_6: "",
-        day_7: "",
-        day_8: "",
-        day_9: "",
-        day_10: "",
-        day_11: "",
-        day_12: "",
-        day_13: "",
-        day_14: "",
-        day_15: "",
-        day_16: "",
-        day_17: "",
-        day_18: "",
-        day_19: "",
-        day_20: "",
-        day_21: "",
-        day_22: "",
-        day_23: "",
-        day_24: "",
-        day_25: "",
-        day_26: "",
-        day_27: "",
-        day_28: "",
-        day_29: "",
-        day_30: "",
-        day_31: "",
-      });
+      setValues({});
+      setErrors({});
       setLoading(false);
       routineAlert("New Routine has been added");
       handleClose();
@@ -222,46 +59,12 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
 
   const handleCreate = () => {
     setLoading(true);
-    setErrors({
-      nutrition_routine_name: "",
-      sub_name: "",
-      day_1: "",
-      day_2: "",
-      day_3: "",
-      day_4: "",
-      day_5: "",
-      day_6: "",
-      day_7: "",
-      day_8: "",
-      day_9: "",
-      day_10: "",
-      day_11: "",
-      day_12: "",
-      day_13: "",
-      day_14: "",
-      day_15: "",
-      day_16: "",
-      day_17: "",
-      day_18: "",
-      day_19: "",
-      day_20: "",
-      day_21: "",
-      day_22: "",
-      day_23: "",
-      day_24: "",
-      day_25: "",
-      day_26: "",
-      day_27: "",
-      day_28: "",
-      day_29: "",
-      day_30: "",
-      day_31: "",
-    });
+    setErrors({});
     let isErrorExit = false;
     let errorObject = {};
 
-    if (!values.exercise_routine_name) {
-      errorObject.exercise_routine_name = "Routine name is required";
+    if (!values.nutrition_routine_name) {
+      errorObject.nutrition_routine_name = "Routine name is required";
       isErrorExit = true;
     }
     if (!values.day_1) {
@@ -370,7 +173,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_1"
               value={values.sub_name}
               label="day_1"
-              onChange={handleChange_1("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -389,7 +192,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_2"
               value={values.sub_name}
               label="day_2"
-              onChange={handleChange_2("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -410,7 +213,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_3"
               value={values.sub_name}
               label="day_3"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -431,7 +234,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_4"
               value={values.sub_name}
               label="day_4"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -452,7 +255,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_5"
               value={values.sub_name}
               label="day_5"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -473,7 +276,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_6"
               value={values.sub_name}
               label="day_6"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -494,7 +297,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_7"
               value={values.sub_name}
               label="day_7"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -515,7 +318,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_8"
               value={values.sub_name}
               label="day_8"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -536,7 +339,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_9"
               value={values.sub_name}
               label="day_9"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -569,7 +372,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_10"
                 value={values.sub_name}
                 label="day_10"
-                onChange={handleChange_3("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -590,7 +393,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_11"
                 value={values.sub_name}
                 label="day_11"
-                onChange={handleChange_3("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -611,7 +414,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_12"
                 value={values.sub_name}
                 label="day_12"
-                onChange={handleChange_3("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -632,7 +435,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_13"
                 value={values.sub_name}
                 label="day_13"
-                onChange={handleChange_3("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -653,7 +456,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_14"
                 value={values.sub_name}
                 label="day_14"
-                onChange={handleChange_3("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -674,7 +477,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_15"
                 value={values.sub_name}
                 label="day_15"
-                onChange={handleChange_3("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -695,7 +498,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_16"
                 value={values.sub_name}
                 label="day_16"
-                onChange={handleChange_3("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -716,7 +519,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_17"
                 value={values.sub_name}
                 label="day_17"
-                onChange={handleChange_4("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -737,7 +540,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_18"
                 value={values.sub_name}
                 label="day_18"
-                onChange={handleChange_5("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -758,7 +561,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
                 labelId="day_19"
                 value={values.sub_name}
                 label="day_19"
-                onChange={handleChange_6("sub_name")}
+                onChange={handleChange("sub_name")}
                 error={errors.sub_name ? true : false}
               >
                 {Array.isArray(sub)
@@ -790,7 +593,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_20"
               value={values.sub_name}
               label="day_20"
-              onChange={handleChange_7("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -811,7 +614,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_21"
               value={values.sub_name}
               label="day_21"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -832,7 +635,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_22"
               value={values.sub_name}
               label="day_22"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -853,7 +656,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_23"
               value={values.sub_name}
               label="day_23"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -874,7 +677,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_24"
               value={values.sub_name}
               label="day_24"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -895,7 +698,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_25"
               value={values.sub_name}
               label="day_25"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -916,7 +719,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_26"
               value={values.sub_name}
               label="day_26"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -937,7 +740,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_27"
               value={values.sub_name}
               label="day_27"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -958,7 +761,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_28"
               value={values.sub_name}
               label="day_28"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -979,7 +782,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_29"
               value={values.sub_name}
               label="day_29"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -1000,7 +803,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_30"
               value={values.sub_name}
               label="day_30"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)
@@ -1021,7 +824,7 @@ const CreateNuRoutine = ({ handleClose, routineAlert }) => {
               labelId="day_31"
               value={values.sub_name}
               label="day_3"
-              onChange={handleChange_3("sub_name")}
+              onChange={handleChange("sub_name")}
               error={errors.sub_name ? true : false}
             >
               {Array.isArray(sub)

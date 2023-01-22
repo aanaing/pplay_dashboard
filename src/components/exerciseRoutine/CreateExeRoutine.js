@@ -1,4 +1,4 @@
- import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useMutation } from "@apollo/client";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -53,7 +53,6 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
       console.log("right");
       setValues({});
       setErrors({});
-
       setLoading(false);
       routineAlert("New Routine has been added");
       handleClose();
@@ -65,7 +64,7 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
     setValues({});
     setErrors({});
     handleClose();
-  } ;
+  };
 
   const handleCreate = () => {
     setLoading(true);
@@ -275,7 +274,7 @@ const CreateExeRoutine = ({ handleClose, routineAlert }) => {
                   : null}
               </Select>
               {errors.day_4 && (
-                  <FormHelperText error>{errors.day_4}</FormHelperText>
+                <FormHelperText error>{errors.day_4}</FormHelperText>
               )}
             </FormControl>
             <FormControl variant="outlined" sx={{ my: 2 }}>
