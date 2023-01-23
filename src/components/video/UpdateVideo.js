@@ -44,6 +44,10 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [videoAFile, setVideoAFile] = useState(null);
+  const [videoAFileUrl, setVideoAFileUrl] = useState(null);
+  const [videoBFile, setVideoBFile] = useState(null);
+  const [videoBFileUrl, setVideoBFileUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     main_type: "",
@@ -106,9 +110,34 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
       setIsImageChange(true);
       setValues({
         ...values,
-        video_url_a: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
-        video_url_b: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
+
         thumbnail_image_url: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
+      });
+    },
+  });
+
+  const [getVideoAUrl] = useMutation(GET_IMAGE_UPLOAD_URL, {
+    onError: (error) => {
+      console.log("error : ", error);
+    },
+    onCompleted: (result) => {
+      setVideoAFileUrl(result.getImageUploadUrl.imageUploadUrl);
+      setValues({
+        ...values,
+        video_url_a: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
+      });
+    },
+  });
+
+  const [getVideoBUrl] = useMutation(GET_IMAGE_UPLOAD_URL, {
+    onError: (error) => {
+      console.log("error : ", error);
+    },
+    onCompleted: (result) => {
+      setVideoBFileUrl(result.getImageUploadUrl.imageUploadUrl);
+      setValues({
+        ...values,
+        video_url_b: `https://axra.sgp1.digitaloceanspaces.com/VJun/${result.getImageUploadUrl.imageName}`,
       });
     },
   });
@@ -215,9 +244,9 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
       setImagePreview(video.thumbnail_image_url);
     }
 
-    if(video.main_type === "ZUMBA"){
+    if (video.main_type === "ZUMBA") {
       setShowSubInput(true);
-    }else{
+    } else {
       setShowSubInput(false);
     }
     //console.log(video);
@@ -284,9 +313,9 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
         });
         return;
       }
-      setImageFile(videofile);
+      setVideoAFile(videofile);
       //setImagePreview(URL.createObjectURL(videofile));
-      getImageUrl();
+      getVideoAUrl();
     }
   };
   const videoChangeB = async (e) => {
@@ -307,9 +336,9 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
         });
         return;
       }
-      setImageFile(videofile);
+      setVideoBFile(videofile);
       //setImagePreview(URL.createObjectURL(videofile));
-      getImageUrl();
+      getVideoBUrl();
     }
   };
 
@@ -381,6 +410,8 @@ const UpdateVideo = ({ handleClose, videoAlert, video }) => {
         await imageService.uploadImage(imageFileUrl, imageFile);
         deleteImage({ variables: { image_name: oldImageName } });
       }
+      await imageService.uploadImage(videoAFileUrl, videoAFile);
+      await imageService.uploadImage(videoBFileUrl, videoBFile);
       if (values.main_type === "ZUMBA") {
         delete values.sub_name;
         setValues(values);

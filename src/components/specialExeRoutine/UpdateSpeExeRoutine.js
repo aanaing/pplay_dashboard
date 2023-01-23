@@ -87,7 +87,7 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
     setValues(value);
   }, [value]);
 
-  console.log(values);
+  //console.log(values);
 
   const handleUpdateClose = () => {
     setValues({});
@@ -232,9 +232,9 @@ const UpdateSpeExeRoutine = ({ handleClose, routineAlert, value }) => {
                 {Array.isArray(sub)
                   ? sub.map((sub) => {
                       if (sub.id === values.day_1) {
-                        console.log("default values");
+                        // console.log("default values");
                       }
-                      console.log(sub.id);
+                      //console.log(sub.id);
                       return (
                         <MenuItem key={sub.id} value={sub.id}>
                           {sub.sub_type_name}

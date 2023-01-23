@@ -74,7 +74,7 @@ const Routine = () => {
   const [loadRoutine, resutRoutine] = useLazyQuery(GET_ALL_SPECIAL_EXE_ROUTINE);
   const [loadSubType, resultSubType] = useLazyQuery(SUB_TYPE_NAME);
   const [routine, setRoutine] = useState({});
-  console.log(resutRoutine);
+  //console.log(resutRoutine);
 
   // ---------------------****------------------------
 

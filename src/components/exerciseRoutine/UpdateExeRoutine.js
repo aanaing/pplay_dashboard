@@ -131,7 +131,7 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
       return;
     }
     try {
-      console.log(values);
+      // console.log(values);
       updateRoutine({ variables: { ...values } });
     } catch (e) {
       console.log("error:", e.message);
@@ -178,7 +178,6 @@ const UpdateExeRoutine = ({ handleClose, routineAlert, value }) => {
         sx={{
           display: "flex",
           justifyContent: "flex-start",
-
           bgcolor: "white",
           maxWidth: 820,
           borderRadius: 0,
